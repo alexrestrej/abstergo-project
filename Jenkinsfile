@@ -3,7 +3,11 @@ pipeline {
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "alexrestrej/abstergo"
-    }
+        PROJECT_ID = 'bastergo-proh'
+        CLUSTER_NAME = 'abstergo-cluster'
+        LOCATION = 'us-central1-c'
+        CREDENTIALS_ID = 'gke'
+        }
     stages {
         stage('Build') {
             steps {
@@ -31,7 +35,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'fba9cdb5-9e7c-4eb2-9fc9-864ab6557d9b') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
@@ -46,8 +50,10 @@ pipeline {
                 CANARY_REPLICAS = 1
             }
             steps {
+                //sh "sed -i 's/hello:latest/hello:${env.BUILD_ID}/g' deployment.yaml"
+                //step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                 kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
+                    kubeconfigId: 'gke',
                     configs: 'train-schedule-kube-canary.yml',
                     enableConfigSubstitution: true
                 )
@@ -69,7 +75,7 @@ pipeline {
                     enableConfigSubstitution: true
                 )
                 kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
+                    kubeconfigId: 'gke',
                     configs: 'train-schedule-kube.yml',
                     enableConfigSubstitution: true
                 )
