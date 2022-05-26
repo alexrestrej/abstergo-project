@@ -3,10 +3,10 @@ pipeline {
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "alexrestrej/abstergo"
-        PROJECT_ID = 'bastergo-proh'
-        CLUSTER_NAME = 'abstergo-cluster'
-        LOCATION = 'us-central1-c'
-        CREDENTIALS_ID = 'gke'
+        //PROJECT_ID = 'bastergo-proh'
+        //CLUSTER_NAME = 'abstergo-cluster'
+        //LOCATION = 'us-central1-c'
+        //CREDENTIALS_ID = 'gke'
         }
     stages {
         stage('Build') {
