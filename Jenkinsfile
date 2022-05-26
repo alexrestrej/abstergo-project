@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        //be sure to replace "bhavukm" with your own Docker Hub username
+        //be sure to replace "bhavukm" with your own Docker Hub username v1
         DOCKER_IMAGE_NAME = "alexrestrej/abstergo"
         }
     stages {
